@@ -1,0 +1,20 @@
+---
+# This role contains tasks for managing the collins service
+
+- name: copy shell script for starting collins
+  template: src=collins.j2 dest=/usr/bin/collins.sh mode=u=rwx,g=rx,o=rx
+
+- name: copy systemd units for collins
+  copy: src=collins.service dest=/etc/systemd/system/collins.service
+
+- name: check for collins image
+  shell: "docker images | grep {{ collins_image }} | grep -q {{ collins_image_version }}"
+  ignore_errors: true
+  register: collins_exists
+
+- name: pull collins container image
+  shell: "docker pull {{ collins_image }}:{{ collins_image_version }}"
+  when: not collins_exists|success
+
+- name: start collins
+  service: name=collins state=started

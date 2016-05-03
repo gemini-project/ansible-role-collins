@@ -1,0 +1,5 @@
+---
+# This play contains tasks for cleaning up the Collins service
+
+- name: stop collins
+  service: name=collins state=stopped

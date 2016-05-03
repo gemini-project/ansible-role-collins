@@ -1,0 +1,5 @@
+---
+# The dependecies for Collins
+
+#dependencies:
+#- { role: docker }
